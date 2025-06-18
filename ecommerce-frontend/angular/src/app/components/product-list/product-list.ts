@@ -1,24 +1,41 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../common/product';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
   standalone: false,
   templateUrl: './product-list-grid.html',
-  //templateUrl: './product-list-table.html',
   styleUrl: './product-list.css'
 })
 export class ProductList {
 
   products: Product[] = [];
-  constructor(private productService: ProductService) { }
+  currentCategoryId: number = 1;
+
+  constructor(private productService: ProductService, 
+              private route: ActivatedRoute, 
+              private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.listProducts();
+    this.route.paramMap.subscribe(() => {
+      this.listProducts();
+    });
   }
+
   listProducts() {
-    this.productService.getProductList().subscribe({
+
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
+
+    if (hasCategoryId) {
+      this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
+    } else {
+      this.currentCategoryId = 1;
+    }
+
+    this.productService.getProductList(this.currentCategoryId).subscribe({
       next: data => {
         this.products = data;
       },
