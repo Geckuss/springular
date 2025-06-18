@@ -44,11 +44,11 @@ public class Product {
     @Column(name="units_in_stock")
     private int unitsInStock;
 
-    @Column(name="created_at")
+    @Column(name="date_created")
     @CreationTimestamp
     private Date createdAt;
 
-    @Column(name="modified_at")
+    @Column(name="last_updated")
     @UpdateTimestamp
     private Date modifiedAt;
 
