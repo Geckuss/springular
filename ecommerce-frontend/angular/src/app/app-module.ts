@@ -6,6 +6,7 @@ import { ProductList } from './components/product-list/product-list';
 import { ProductService } from './services/product-service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
+import { ProductCategoryMenu } from './components/product-category-menu/product-category-menu';
 
 const routes: Routes = [
   {path: 'category/:id', component: ProductList},
@@ -19,6 +20,7 @@ const routes: Routes = [
   declarations: [
     App,
     ProductList,
+    ProductCategoryMenu,
   ],
   imports: [
     BrowserModule,
