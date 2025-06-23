@@ -13,6 +13,7 @@ export class ProductList {
 
   products: Product[] = [];
   currentCategoryId: number = 1;
+  searchMode: boolean = false;
 
   constructor(private productService: ProductService, 
               private route: ActivatedRoute, 
@@ -27,6 +28,31 @@ export class ProductList {
 
   listProducts() {
 
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    if (this.searchMode) {
+      this.handleSearchProducts(this.route.snapshot.paramMap.get('keyword')!);
+      return;
+    }
+
+    else {
+      this.handleListProducts();
+    }
+  }
+
+  handleSearchProducts(keyword: string): void {
+
+    this.productService.searchProducts(keyword).subscribe({
+      next: data => {
+        this.products = data;
+      },
+      error: error => {
+        console.error('Error fetching search results by keyword', error);
+      }
+    });
+  }
+
+  handleListProducts(){
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
     if (hasCategoryId) {
@@ -44,4 +70,5 @@ export class ProductList {
       }
     });
   }
+
 }
