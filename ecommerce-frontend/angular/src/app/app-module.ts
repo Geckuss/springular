@@ -9,6 +9,7 @@ import { ProductCategoryMenu } from './components/product-category-menu/product-
 import { SearchBar } from './components/search-bar/search-bar';
 import { ProductDetails } from './components/product-details/product-details';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CartStatus } from './components/cart-status/cart-status';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProductCategoryMenu,
     SearchBar,
     ProductDetails,
+    CartStatus,
   ],
   imports: [
     BrowserModule,
