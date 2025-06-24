@@ -13,8 +13,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProductList implements OnInit {
 
   products: Product[] = [];
+  previousCategoryId: number = 1;
   currentCategoryId: number = 1;
   searchMode: boolean = false;
+  pageNumber: number = 1;
+  pageSize: number = 10;
+  totalElements: number = 0;
 
   constructor(private productService: ProductService, 
               private route: ActivatedRoute, 
@@ -62,9 +66,19 @@ export class ProductList implements OnInit {
       this.currentCategoryId = 1;
     }
 
-    this.productService.getProductList(this.currentCategoryId).subscribe({
+    if (this.previousCategoryId != this.currentCategoryId) {
+      this.pageNumber = 1; // Reset to first page if category changes
+    }
+
+    this.previousCategoryId = this.currentCategoryId;
+    
+
+    this.productService.getProductListPaginate(this.pageNumber - 1, this.pageSize, this.currentCategoryId).subscribe({
       next: data => {
-        this.products = data;
+        this.products = data._embedded.products;
+        this.pageNumber = data.page.number + 1;
+        this.pageSize = data.page.size;
+        this.totalElements = data.page.totalElements;
       },
       error: error => {
         console.error('Error fetching product list', error);
