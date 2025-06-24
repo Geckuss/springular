@@ -5,11 +5,10 @@ import { App } from './app';
 import { ProductList } from './components/product-list/product-list';
 import { ProductService } from './services/product-service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { Routes, RouterModule, ROUTES } from '@angular/router';
 import { ProductCategoryMenu } from './components/product-category-menu/product-category-menu';
 import { SearchBar } from './components/search-bar/search-bar';
 import { ProductDetails } from './components/product-details/product-details';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,6 +21,7 @@ import { ProductDetails } from './components/product-details/product-details';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgbModule,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
