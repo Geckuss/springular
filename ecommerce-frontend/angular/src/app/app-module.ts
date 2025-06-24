@@ -5,17 +5,11 @@ import { App } from './app';
 import { ProductList } from './components/product-list/product-list';
 import { ProductService } from './services/product-service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ROUTES } from '@angular/router';
 import { ProductCategoryMenu } from './components/product-category-menu/product-category-menu';
 import { SearchBar } from './components/search-bar/search-bar';
+import { ProductDetails } from './components/product-details/product-details';
 
-const routes: Routes = [
-  {path: 'category/:id', component: ProductList},
-  {path: 'category', component: ProductList},
-  {path: 'products', component: ProductList},
-  {path: '', redirectTo: '/products', pathMatch: 'full'},
-  {path: '**', redirectTo: '/products' },
-]
 
 @NgModule({
   declarations: [
@@ -23,11 +17,11 @@ const routes: Routes = [
     ProductList,
     ProductCategoryMenu,
     SearchBar,
+    ProductDetails,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule.forRoot(routes),
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

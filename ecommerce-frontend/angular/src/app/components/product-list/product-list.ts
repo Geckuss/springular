@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product-service';
 import { Product } from '../../common/product';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,7 +9,8 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './product-list-grid.html',
   styleUrl: './product-list.css'
 })
-export class ProductList {
+
+export class ProductList implements OnInit {
 
   products: Product[] = [];
   currentCategoryId: number = 1;

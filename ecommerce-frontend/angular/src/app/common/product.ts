@@ -5,9 +5,10 @@ export class Product {
         public name: string,
         public description: string,
         public imageUrl: string,
+        public id: number,
         public unitPrice: number,
-        public active: boolean,
         public unitsInStock: number,
+        public active: boolean,
         public createdAt: Date,
         public modifiedAt: Date,
     ) { 
