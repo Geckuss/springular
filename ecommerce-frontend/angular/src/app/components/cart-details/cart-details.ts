@@ -44,7 +44,16 @@ export class CartDetails {
   }
 
   removeFromCart(cartItem: CartItem) {
-    throw new Error('Method not implemented.');
+    this.cartService.removeFromCart(cartItem);
+    this.listCartDetails();
+  }
+
+  increaseQuantity(cartItem: CartItem) {
+    this.cartService.addToCart(cartItem);
+  }
+
+  decreaseQuantity(cartItem: CartItem) {
+    this.cartService.decrementFromCart(cartItem);
   }
 
 }
