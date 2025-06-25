@@ -1,7 +1,9 @@
 package com.twoday.ecommerce.config;
 
+import com.twoday.ecommerce.entity.Country;
 import com.twoday.ecommerce.entity.Product;
 import com.twoday.ecommerce.entity.ProductCategory;
+import com.twoday.ecommerce.entity.State;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.metamodel.EntityType;
@@ -30,18 +32,20 @@ public class RestConfig implements RepositoryRestConfigurer {
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config, CorsRegistry cors) {
         HttpMethod[] unsupportedMethods = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
 
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods))
-                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods))
-                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods));
+        disableHttpMethods(Product.class, config, unsupportedMethods);
+        disableHttpMethods(ProductCategory.class, config, unsupportedMethods);
+        disableHttpMethods(Country.class, config, unsupportedMethods);
+        disableHttpMethods(State.class, config, unsupportedMethods);
 
         exposeIds(config);
 
+    }
+    
+    private void disableHttpMethods(Class entityClass, RepositoryRestConfiguration config, HttpMethod[] unsupportedMethods) {
+        config.getExposureConfiguration()
+                .forDomainType(entityClass)
+                .withItemExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods))
+                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedMethods));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
