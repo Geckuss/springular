@@ -10,6 +10,7 @@ import { SearchBar } from './components/search-bar/search-bar';
 import { ProductDetails } from './components/product-details/product-details';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartStatus } from './components/cart-status/cart-status';
+import { CartDetails } from './components/cart-details/cart-details';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { CartStatus } from './components/cart-status/cart-status';
     SearchBar,
     ProductDetails,
     CartStatus,
+    CartDetails,
   ],
   imports: [
     BrowserModule,
