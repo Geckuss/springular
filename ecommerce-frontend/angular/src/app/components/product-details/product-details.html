@@ -3,7 +3,7 @@
         <img class="detail-img" src="{{ product.imageUrl }}" />
         <h3>{{ product.name }}</h3>
         <div class="detail-price">{{ product.unitPrice | currency:'EUR' }}</div>
-        <a href="#" class="primary-btn">Add to cart</a>
+        <button (click)="addToCart()" class="btn btn-primary">Add to cart</button>
         <hr>
         <h4>Description</h4>
         <p>{{ product.description }}</p>

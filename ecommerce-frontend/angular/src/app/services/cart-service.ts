@@ -21,14 +21,9 @@ export class CartService {
     
     if (this.cartItems.length > 0) {
 
-      for (let tempCartItem of this.cartItems) {
-        if (tempCartItem.id === cartItem.id) {
-          existingCartItem = tempCartItem;
-          existsInCart = true;
-          break;
-        }
-      }
-      existsInCart = existingCartItem !== undefined;
+      existingCartItem = this.cartItems.find(tempCartItem => tempCartItem.id === cartItem.id);
+
+      existsInCart = existingCartItem != undefined;
     }
 
     if (existsInCart && existingCartItem) {
