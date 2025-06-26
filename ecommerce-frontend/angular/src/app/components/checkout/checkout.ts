@@ -5,6 +5,7 @@ import { FormService } from '../../services/form-service';
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
 import { Validators as validators } from '../../validators/validators';
+import { CartService } from '../../services/cart-service';
 
 @Component({
   selector: 'app-checkout',
@@ -23,7 +24,7 @@ export class Checkout implements OnInit {
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
 
-  constructor(private formBuilder: FormBuilder, private formService: FormService) {
+  constructor(private formBuilder: FormBuilder, private formService: FormService, private cartService: CartService) {
     this.checkoutFormGroup = new FormGroup({});
   }
 
@@ -78,6 +79,7 @@ export class Checkout implements OnInit {
       }
     );
 
+    this.reviewCartDetails();
   }
 
   get firstName() {return this.checkoutFormGroup.get('customer.firstName') as FormControl;}
@@ -160,6 +162,19 @@ export class Checkout implements OnInit {
       this.checkoutFormGroup.controls['billing'].reset();
       this.billingAddressStates = [];
     }
+  }
+
+  reviewCartDetails() {
+    this.cartService.totalPrice.subscribe(
+      data => {
+        this.totalPrice = data;
+      }
+    );
+    this.cartService.totalQuantity.subscribe(
+      data => {
+        this.totalQuantity = data;
+      }
+    );
   }
 
 }
