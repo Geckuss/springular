@@ -35,26 +35,26 @@ export class Checkout implements OnInit {
         email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       }),
       shipping: this.formBuilder.group({
-        country: [''],
-        street: [''],
-        city: [''],
-        state: [''],
-        zipCode: ['']
+        country: new FormControl('', [Validators.required]),
+        state: new FormControl('', [Validators.required]),
+        street: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
+        city: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
+        zipCode: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
       }),
       billing: this.formBuilder.group({
-        country: [''],
-        street: [''],
-        city: [''],
-        state: [''],
-        zipCode: ['']
+        country: new FormControl('', [Validators.required]),
+        state: new FormControl('', [Validators.required]),
+        street: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
+        city: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
+        zipCode: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
       }),
       payment: this.formBuilder.group({
-        cardType: [''],
-        nameOnCard: [''],
-        cardNumber: [''],
-        securityCode: [''],
-        expirationMonth: [''],
-        expirationYear: ['']
+        cardType: new FormControl('', [Validators.required]),
+        nameOnCard: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
+        cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}')]),
+        securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}')]),
+        expirationMonth: new FormControl('', [Validators.required]),
+        expirationYear: new FormControl('', [Validators.required]),
       })
     })
 
@@ -83,6 +83,25 @@ export class Checkout implements OnInit {
   get firstName() {return this.checkoutFormGroup.get('customer.firstName') as FormControl;}
   get lastName() {return this.checkoutFormGroup.get('customer.lastName') as FormControl;}
   get email() {return this.checkoutFormGroup.get('customer.email') as FormControl;}
+
+  get shippingStreet() {return this.checkoutFormGroup.get('shipping.street') as FormControl;}
+  get shippingCity() {return this.checkoutFormGroup.get('shipping.city') as FormControl;}
+  get shippingZipCode() {return this.checkoutFormGroup.get('shipping.zipCode') as FormControl;}
+  get shippingState() {return this.checkoutFormGroup.get('shipping.state') as FormControl;}
+  get shippingCountry() {return this.checkoutFormGroup.get('shipping.country') as FormControl;}
+
+  get billingStreet() {return this.checkoutFormGroup.get('billing.street') as FormControl;}
+  get billingCity() {return this.checkoutFormGroup.get('billing.city') as FormControl;}
+  get billingZipCode() {return this.checkoutFormGroup.get('billing.zipCode') as FormControl;}
+  get billingState() {return this.checkoutFormGroup.get('billing.state') as FormControl;}
+  get billingCountry() {return this.checkoutFormGroup.get('billing.country') as FormControl;}
+
+  get cardType() {return this.checkoutFormGroup.get('payment.cardType') as FormControl;}
+  get nameOnCard() {return this.checkoutFormGroup.get('payment.nameOnCard') as FormControl;}
+  get cardNumber() {return this.checkoutFormGroup.get('payment.cardNumber') as FormControl;}
+  get securityCode() {return this.checkoutFormGroup.get('payment.securityCode') as FormControl;}
+  get expirationMonth() {return this.checkoutFormGroup.get('payment.expirationMonth') as FormControl;}
+  get expirationYear() {return this.checkoutFormGroup.get('payment.expirationYear') as FormControl;}
 
   getStates(formGroupName: string) {
     const formGroup = this.checkoutFormGroup.get(formGroupName);
