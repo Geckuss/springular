@@ -4,6 +4,7 @@ import { count } from 'rxjs';
 import { FormService } from '../../services/form-service';
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
+import { Validators as validators } from '../../validators/validators';
 
 @Component({
   selector: 'app-checkout',
@@ -29,8 +30,8 @@ export class Checkout implements OnInit {
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
-        firstName: new FormControl('', [Validators.required, Validators.minLength(2)]),
-        lastName: new FormControl('', [Validators.required, Validators.minLength(2)]),
+        firstName: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
+        lastName: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
         email: new FormControl('', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       }),
       shipping: this.formBuilder.group({
