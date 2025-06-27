@@ -353,12 +353,6 @@
                                     </option>
                                 </select>
                             </div>
-                            <div *ngIf="expirationMonth.invalid && (expirationMonth.dirty || expirationMonth.touched)"
-                                class="alert alert-danger">
-                                <div *ngIf="expirationMonth.errors?.['required']">
-                                    Expiration month is required.
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -371,12 +365,6 @@
                                         {{ year }}
                                     </option>
                                 </select>
-                            </div>
-                            <div *ngIf="expirationYear.invalid && (expirationYear.dirty || expirationYear.touched)"
-                                class="alert alert-danger">
-                                <div *ngIf="expirationYear.errors?.['required']">
-                                    Expiration year is required.
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -394,7 +382,7 @@
 
                 <!-- Order Summary End -->
                 <div class="text-center"> <!-- Submit Button -->
-                    <button (click)="onSubmit()" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
         </div>

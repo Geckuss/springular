@@ -34,7 +34,7 @@ public class CheckoutServiceImpl implements CheckoutService{
         order.setOrderTrackingNumber(orderTrackingNumber);
 
         // Populate the order with orderItems
-        Set<OrderItem> orderItems = order.getOrderItems();
+        Set<OrderItem> orderItems = purchase.getOrderItems();
         orderItems.forEach(order::add);
 
         // Set the addresses in the order

@@ -6,6 +6,11 @@ import { Country } from '../../common/country';
 import { State } from '../../common/state';
 import { Validators as validators } from '../../validators/validators';
 import { CartService } from '../../services/cart-service';
+import { CheckoutService } from '../../services/checkout-service';
+import { Order } from '../../common/order';
+import { OrderItem } from '../../common/order-item';
+import { Purchase } from '../../common/purchase';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -24,7 +29,7 @@ export class Checkout implements OnInit {
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
 
-  constructor(private formBuilder: FormBuilder, private formService: FormService, private cartService: CartService) {
+  constructor(private router: Router, private formBuilder: FormBuilder, private formService: FormService, private cartService: CartService, private checkoutService: CheckoutService) {
     this.checkoutFormGroup = new FormGroup({});
   }
 
@@ -54,8 +59,8 @@ export class Checkout implements OnInit {
         nameOnCard: new FormControl('', [Validators.required, Validators.minLength(2), validators.notOnlyWhitespace]),
         cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}')]),
         securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}')]),
-        expirationMonth: new FormControl('', [Validators.required]),
-        expirationYear: new FormControl('', [Validators.required]),
+        expirationMonth: [],
+        expirationYear: [],
       })
     })
 
@@ -109,12 +114,9 @@ export class Checkout implements OnInit {
     const formGroup = this.checkoutFormGroup.get(formGroupName);
     const countryCode = formGroup?.value.country.code;
     const countryName = formGroup?.value.country.name;
-    console.log(`Country Code: ${countryCode}, Country Name: ${countryName}`);
-    console.log(`Form Group Name: ${formGroupName}`);
 
     this.formService.getStates(countryCode).subscribe(
       data => {
-        console.log(data);
         if (formGroupName == 'shipping') {
           this.shippingAddressStates = data;
         }
@@ -147,11 +149,58 @@ export class Checkout implements OnInit {
   }
 
   onSubmit() {
-    console.log('Handling the submit button');
     if (this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
       return;
     }
+
+    let order = new Order();
+    order.totalQuantity = this.totalQuantity;
+    order.totalPrice = this.totalPrice;
+
+    // CartItems to OrderItems
+    const cartItems = this.cartService.cartItems;
+    let orderItems: OrderItem[] = cartItems.map(item => new OrderItem(item));
+
+    let purchase = new Purchase();
+
+    // Populate purchase
+
+    purchase.customer = this.checkoutFormGroup.controls['customer'].value;
+
+    purchase.shippingAddress = this.checkoutFormGroup.controls['shipping'].value;
+    const shippingState: State = JSON.parse(JSON.stringify(purchase.shippingAddress.state));
+    const shippingCountry: Country = JSON.parse(JSON.stringify(purchase.shippingAddress.country));
+    purchase.shippingAddress.state = shippingState.name;
+    purchase.shippingAddress.country = shippingCountry.name;
+
+    purchase.billingAddress = this.checkoutFormGroup.controls['billing'].value;
+    const billingState: State = JSON.parse(JSON.stringify(purchase.billingAddress.state));
+    const billingCountry: Country = JSON.parse(JSON.stringify(purchase.billingAddress.country));
+    purchase.billingAddress.state = billingState.name;
+    purchase.billingAddress.country = billingCountry.name;
+
+    purchase.order = order;
+    purchase.orderItems = orderItems;
+
+    // Call REST API to place order
+    this.checkoutService.placeOrder(purchase).subscribe({
+      next: response => {
+        alert(`Your order has been received.\nOrder tracking number: ${response.orderTrackingNumber}`);
+        // this.resetCart();
+      },
+      error: err => {
+        alert(`There was an error while placing your order: ${err.message}`);
+      }
+    });
+  }
+
+  resetCart() {
+    this.cartService.cartItems = [];
+    this.cartService.totalPrice.next(0);
+    this.cartService.totalQuantity.next(0);
+    this.checkoutFormGroup.reset();
+    this.router.navigateByUrl('/products');
   }
 
   copyShippingAddressToBillingAddress(event: any) {
