@@ -40,7 +40,7 @@ public class RestConfig implements RepositoryRestConfigurer {
         exposeIds(config);
 
     }
-    
+
     private void disableHttpMethods(Class entityClass, RepositoryRestConfiguration config, HttpMethod[] unsupportedMethods) {
         config.getExposureConfiguration()
                 .forDomainType(entityClass)
